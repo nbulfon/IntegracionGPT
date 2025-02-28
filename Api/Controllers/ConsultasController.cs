@@ -23,6 +23,7 @@ namespace Api.Controllers
         private readonly JPSContexto _contexto;
         private readonly string _folderPath;
         private readonly IConfiguration _configuration;
+        private readonly string _indexFilePath;
 
         public ConsultasController(JPSContexto contexto, IConfiguration configuration)
         {
@@ -31,14 +32,15 @@ namespace Api.Controllers
             _baseDeDatosService = new BdService(_contexto, _configuration);
             _archivosService = new ArchivosService(_configuration);
             _folderPath = configuration.GetValue<string>("Variables:PATH_CARPETA_ARCHIVOS");
+            _indexFilePath = configuration.GetValue<string>("Variables:INDEX_FILE_PATH") + "file_index.json";
         }
 
         /// <summary>
         /// Gets a natural language query, internally transforms it to a SQL query, queries the database, and returns the result.
         /// </summary>
         /// <returns></returns>
-        [HttpPost("human_Query")]
-        public async Task<IActionResult> HumanQuery([FromBody] QueryStringRecibida queryString)
+        [HttpPost("consultarBaseDeDatos")]
+        public async Task<IActionResult> ConsultarBaseDeDatos([FromBody] QueryStringRecibida queryString)
         {
             try
             {
@@ -79,38 +81,12 @@ namespace Api.Controllers
         /// <param name="queryString"></param>
         /// <returns></returns>
         [HttpPost("leer_archivos")]
-        public async Task<IActionResult> SearchFiles([FromBody] QueryStringRecibida queryString)
+        public async Task<IActionResult> ConsultarArchivos([FromBody] QueryStringRecibida queryString)
         {
             try
             {
-                // Indexar los archivos al iniciar la API (se puede hacer opcionalmente)
-                if (!System.IO.File.Exists("file_index.json"))
-                {
-                    _archivosService.IndexFiles(_folderPath);
-                    Console.WriteLine("Archivos indexados.");
-                }
-                else
-                {
-                    // Cargar el índice existente y verificar si está vacío o necesita actualización
-                    try
-                    {
-                        var existingIndex = JsonSerializer.Deserialize<List<FileChunk>>(System.IO.File.ReadAllText("file_index.json"));
-                        if (existingIndex == null || existingIndex.Count == 0)
-                        {
-                            _archivosService.IndexFiles(_folderPath);
-                            Console.WriteLine("Índice vacío detectado. Reindexando archivos.");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Índice de archivos cargado correctamente.");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error al leer el índice. Reindexando. Detalles: {ex.Message}");
-                        _archivosService.IndexFiles(_folderPath);
-                    }
-                }
+                // Verifica si el índice ya existe o si necesita ser reindexado
+                VerificarOReindexarArchivos();
 
                 if (string.IsNullOrEmpty(queryString.SentenciaNatural))
                 {
@@ -118,13 +94,45 @@ namespace Api.Controllers
                 }
 
                 // Buscar en los archivos indexados y obtener respuesta
-                string response = await _archivosService.SearchAndAnswerAsync(queryString.SentenciaNatural);
+                string response = await _archivosService.SearchAndAnswerAsync(queryString.SentenciaNatural, _indexFilePath);
 
                 return Ok(new { answer = response });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { error = ex.Message });
+                return StatusCode(500, new { error = $"Error en la consulta: {ex.Message}" });
+            }
+        }
+        /// <summary>
+        /// Verifica si hay un índice existente o si es necesario reindexar los archivos.
+        /// </summary>
+        private void VerificarOReindexarArchivos()
+        {
+            if (!System.IO.File.Exists(_indexFilePath))
+            {
+                Console.WriteLine("No se encontró el índice. Indexando archivos...");
+                _archivosService.IndexFiles(_folderPath, _indexFilePath);
+            }
+            else
+            {
+                try
+                {
+                    var existingIndex = JsonSerializer.Deserialize<List<FragmentoArchivo>>(System.IO.File.ReadAllText(_indexFilePath));
+                    if (existingIndex == null || existingIndex.Count == 0)
+                    {
+                        Console.WriteLine("Índice vacío detectado. Reindexando archivos...");
+                        _archivosService.IndexFiles(_folderPath, _indexFilePath);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Índice de archivos cargado correctamente.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error al leer el índice. Se requiere reindexación. Detalles: {ex.Message}");
+                    _archivosService.IndexFiles(_folderPath, _indexFilePath);
+                }
             }
         }
     }

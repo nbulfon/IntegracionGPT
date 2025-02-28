@@ -1,5 +1,10 @@
 ﻿using System.Text.Json;
 using System.Text;
+using DocumentFormat.OpenXml.Packaging;
+using ClosedXML.Excel;
+using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.parser;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 using Api.Model;
 
 namespace Api.Services
@@ -8,8 +13,7 @@ namespace Api.Services
     {
         private readonly string _apiKey;
         private readonly HttpClient _httpClient;
-        private readonly string _indexFilePath = "file_index.json"; // Archivo donde guardo el indice
-
+         // Ruta del índice de archivos
 
         public ArchivosService(IConfiguration configuration)
         {
@@ -17,29 +21,34 @@ namespace Api.Services
             _httpClient = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) };
         }
 
-        /// <summary>
-        /// Lee todos los archivos y los divide en fragmentos almacenándolos en un índice local.
-        /// </summary>
-        public void IndexFiles(string folderPath)
-        {
-            var fileIndex = new List<FileChunk>();
 
+        /// <summary>
+        /// Indexa archivos PDF, Word y Excel, dividiéndolos en fragmentos manejables.
+        /// </summary>
+        public void IndexFiles(string folderPath, string indexFilePath)
+        {
+            var fileIndex = new List<FragmentoArchivo>();
+
+            // Verifica si el directorio existe
             if (Directory.Exists(folderPath))
             {
                 foreach (string file in Directory.GetFiles(folderPath))
                 {
                     try
                     {
-                        string content = File.ReadAllText(file);
-                        var chunks = SplitIntoChunks(content, 1000); // Fragmentos de 1000 caracteres
+                        // Extrae el texto del archivo (PDF, Word o Excel)
+                        string content = ExtractTextFromFile(file);
+                        // Divide el texto en fragmentos de 1000 caracteres
+                        List<string> chunks = SplitIntoChunks(content, 1000);
 
+                        // Guarda cada fragmento en la lista de índice
                         for (int i = 0; i < chunks.Count; i++)
                         {
-                            fileIndex.Add(new FileChunk
+                            fileIndex.Add(new FragmentoArchivo
                             {
-                                FileName = Path.GetFileName(file),
-                                ChunkIndex = i,
-                                Content = chunks[i]
+                                NombreArchivo = System.IO.Path.GetFileName(file),
+                                IndiceFragmento = i,
+                                Contenido = chunks[i]
                             });
                         }
                     }
@@ -50,10 +59,70 @@ namespace Api.Services
                 }
             }
 
-            File.WriteAllText(_indexFilePath, JsonSerializer.Serialize(fileIndex, new JsonSerializerOptions { WriteIndented = true }));
+            // Guarda el índice en un archivo JSON
+            File.WriteAllText(indexFilePath, JsonSerializer.Serialize(fileIndex, new JsonSerializerOptions { WriteIndented = true }));
         }
+
         /// <summary>
-        /// Divide un texto en fragmentos de tamaño determinado.
+        /// Determina el tipo de archivo y extrae su contenido de manera apropiada.
+        /// </summary>
+        private string ExtractTextFromFile(string filePath)
+        {
+            string extension = System.IO.Path.GetExtension(filePath).ToLower();
+            if (extension == ".pdf") return ExtractTextFromPdf(filePath);
+            if (extension == ".docx") return ExtractTextFromWord(filePath);
+            if (extension == ".xlsx") return ExtractTextFromExcel(filePath);
+            return "";
+        }
+
+        /// <summary>
+        /// Extrae el texto de un archivo PDF usando iTextSharp.
+        /// </summary>
+        private string ExtractTextFromPdf(string filePath)
+        {
+            StringBuilder text = new StringBuilder();
+            using PdfReader reader = new PdfReader(filePath);
+            for (int i = 1; i <= reader.NumberOfPages; i++)
+            {
+                text.Append(PdfTextExtractor.GetTextFromPage(reader, i));
+            }
+            return text.ToString();
+        }
+
+        /// <summary>
+        /// Extrae el texto de un archivo Word (.docx) usando OpenXML.
+        /// </summary>
+        private string ExtractTextFromWord(string filePath)
+        {
+            StringBuilder text = new StringBuilder();
+            using WordprocessingDocument doc = WordprocessingDocument.Open(filePath, false);
+            foreach (var para in doc.MainDocumentPart.Document.Body.Elements<DocumentFormat.OpenXml.Wordprocessing.Paragraph>())
+            {
+                text.AppendLine(para.InnerText);
+            }
+            return text.ToString();
+        }
+
+        /// <summary>
+        /// Extrae el texto de un archivo Excel (.xlsx) usando ClosedXML.
+        /// </summary>
+        private string ExtractTextFromExcel(string filePath)
+        {
+            StringBuilder text = new StringBuilder();
+            using var workbook = new XLWorkbook(filePath);
+            foreach (var sheet in workbook.Worksheets)
+            {
+                foreach (var row in sheet.RowsUsed())
+                {
+                    // Combina todas las celdas de la fila en un solo string separado por "|"
+                    text.AppendLine(string.Join(" | ", row.Cells().Select(c => c.Value.ToString())));
+                }
+            }
+            return text.ToString();
+        }
+
+        /// <summary>
+        /// Divide un texto en fragmentos de tamaño determinado para facilitar su procesamiento.
         /// </summary>
         private List<string> SplitIntoChunks(string text, int chunkSize)
         {
@@ -64,86 +133,68 @@ namespace Api.Services
             }
             return chunks;
         }
+
         /// <summary>
-        /// Busca en el índice y encuentra los fragmentos más relevantes para la pregunta.
+        /// Busca en el índice de archivos y encuentra los fragmentos más relevantes para la pregunta del usuario.
         /// </summary>
-        public async Task<string> SearchAndAnswerAsync(string userQuestion)
+        public async Task<string> SearchAndAnswerAsync(string userQuestion, string indexFilePath)
         {
-            if (!File.Exists(_indexFilePath))
+            if (!File.Exists(indexFilePath))
             {
                 return "No hay archivos indexados.";
             }
 
-            var fileChunks = JsonSerializer.Deserialize<List<FileChunk>>(File.ReadAllText(_indexFilePath));
-            if (fileChunks == null || fileChunks.Count == 0)
+            // Carga el índice desde el archivo JSON
+            List<FragmentoArchivo> listFragmentoArchivo = JsonSerializer.Deserialize<List<FragmentoArchivo>>(File.ReadAllText(indexFilePath));
+            if (listFragmentoArchivo == null || listFragmentoArchivo.Count == 0)
             {
                 return "No se encontraron fragmentos en el índice.";
             }
 
-            // Filtrar fragmentos más relevantes basados en la pregunta
-            var relevantChunks = fileChunks.Where(f => f.Content.Contains(userQuestion, StringComparison.OrdinalIgnoreCase))
-                                           .Take(5) // Limitar la cantidad de fragmentos enviados a OpenAI
-                                           .Select(f => f.Content)
-                                           .ToList();
+            // divide la pregunta del usuario en palabras clave para búsqueda parcial
+            List<string> palabrasClave = userQuestion.Split(new[] { ' ', ',', '.', '?', '!' }, StringSplitOptions.RemoveEmptyEntries)
+                                       .Select(k => k.ToLower())
+                                       .ToList();
 
-            if (relevantChunks.Count == 0)
+            // filtra los fragmentos más relevantes que contienen palabras clave de la pregunta
+            int fragmentCount = userQuestion.Length > 50 ? 7 : 5;
+            List<string> fragmentosRelevantes = listFragmentoArchivo
+                .Where(f => palabrasClave.Any(k => f.Contenido.ToLower().Contains(k)))
+                .Take(fragmentCount) // Usa el valor dinámico
+                .Select(f => f.Contenido)
+                .ToList();
+
+            if (fragmentosRelevantes.Count == 0)
             {
                 return "No se encontraron fragmentos relevantes para la pregunta.";
             }
 
-            string prompt = GeneratePrompt(userQuestion, relevantChunks);
+            // Genera el prompt con la pregunta del usuario y los fragmentos de archivos encontrados
+            string prompt = GeneratePrompt(userQuestion, fragmentosRelevantes);
             return await GetChatCompletionAsync(prompt);
         }
-        public string GeneratePrompt(string userQuestion, List<string> fileChunks)
+
+        /// <summary>
+        /// Genera el prompt para OpenAI con la pregunta y los fragmentos relevantes de los documentos.
+        /// </summary>
+        private string GeneratePrompt(string userQuestion, List<string> fragmentos)
         {
             return $@"
-            Given the following extracted text from various documents, answer the user's question based on their content.
-            Ensure the response is clear and in valid JSON format.
+            A partir de los siguientes fragmentos de documentos (PDFs, Word, Excel), responde a la pregunta del usuario.
+            Asegúrate de que la respuesta esté en español y sea clara.
 
-            <documents>
-            {string.Join("\n\n", fileChunks)}
-            </documents>
+            <documentos>
+            {string.Join("\n\n", fragmentos)}
+            </documentos>
 
-            User question: {userQuestion}
-            Provide the response in valid JSON format.";
+            Pregunta del usuario: {userQuestion}
+            Proporciona la respuesta en **español** en formato JSON.";
         }
 
         /// <summary>
-        /// Lee el contenido de todos los archivos en una carpeta.
+        /// Conecta con OpenAI y obtiene la respuesta basada en los fragmentos de archivos seleccionados.
         /// </summary>
-        //public List<string> GetFilesContent(string folderPath)
-        //{
-        //    List<string> fileContents = new List<string>();
-
-        //    if (Directory.Exists(folderPath))
-        //    {
-        //        foreach (string file in Directory.GetFiles(folderPath))
-        //        {
-        //            try
-        //            {
-        //                string content = System.IO.File.ReadAllText(file);
-        //                content = content.Length > 500 ? content.Substring(0, 500) + "..." : content; // limite a 500 caracteres por hoja
-        //                fileContents.Add($"File: {Path.GetFileName(file)}\nContent:\n{content}");
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                Console.WriteLine($"Error al leer el archivo {file}: {ex.Message}");
-        //            }
-        //        }
-        //    }
-
-        //    return fileContents;
-        //}
-
-        /// <summary>
-        /// Genera el prompt para OpenAI con la pregunta y el contenido de los archivos.
-        /// </summary>
-       
-
-        /// <summary>
-        /// Método auxiliar para conectarse a la API de OpenAI.
-        /// </summary>
-        public async Task<string> GetChatCompletionAsync(string systemMessage)
+        private async Task<string> GetChatCompletionAsync(string systemMessage)
         {
             string url = "https://api.openai.com/v1/chat/completions";
 
@@ -153,7 +204,7 @@ namespace Api.Services
                 response_format = new { type = "json_object" },
                 messages = new List<object>
                 {
-                    new { role = "system", content = "Respond only in JSON format. " + systemMessage }
+                    new { role = "system", content = "Responde siempre en español. " + systemMessage }
                 }
             };
 
@@ -163,17 +214,39 @@ namespace Api.Services
             _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
 
-            await Task.Delay(1000);
+            await Task.Delay(1000); // Espera un segundo para evitar sobrecarga en OpenAI
             HttpResponseMessage responseMessage = await _httpClient.PostAsync(url, content);
-            string res = await responseMessage.Content.ReadAsStringAsync();
 
-            return res;
+            if (responseMessage.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                string res = await responseMessage.Content.ReadAsStringAsync();
+
+                // Deserialización del JSON de OpenAI
+                OpenAiResponse openAiResponse = JsonSerializer.Deserialize<OpenAiResponse>(res);
+                if (openAiResponse?.choices?.Count > 0)
+                {
+                    string contentJson = openAiResponse.choices[0].message.content;
+                    return contentJson;
+                }
+                else
+                {
+                    throw new Exception("No se pudo extraer la consulta SQL.");
+                }
+            }
+            else
+            {
+                throw new Exception("Problemas con la api de OpenAI");
+            }
         }
     }
-    public class FileChunk
+
+    /// <summary>
+    /// Representa un fragmento de un archivo indexado.
+    /// </summary>
+    public class FragmentoArchivo
     {
-        public string FileName { get; set; }
-        public int ChunkIndex { get; set; }
-        public string Content { get; set; }
+        public string NombreArchivo { get; set; }  // Nombre del archivo original
+        public int IndiceFragmento { get; set; }   // Índice del fragmento dentro del archivo
+        public string Contenido { get; set; }   // Contenido del fragmento de texto
     }
 }

@@ -20,7 +20,7 @@ while (true)
 
     if (origenDatos == "de la base" || origenDatos == "de la base de datos")
     {
-        apiUrl += "/human_query";
+        apiUrl += "/consultarBaseDeDatos";
         break;
     }
     else if (origenDatos == "de mis archivos" || origenDatos == "de los archivos" || origenDatos == "de archivos" || origenDatos == "archivos")

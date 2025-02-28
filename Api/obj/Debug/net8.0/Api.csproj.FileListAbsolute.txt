@@ -108,4 +108,14 @@ C:\NICOLAS\ChatGPT\Api\obj\Debug\net8.0\ref\Api.dll
 C:\NICOLAS\ChatGPT\Api\obj\Debug\net8.0\Api.sourcelink.json
 C:\NICOLAS\ChatGPT\Api\bin\Debug\net8.0\doTech.UranoLibrary.NetCore.dll
 C:\NICOLAS\ChatGPT\Api\bin\Debug\net8.0\doTech.UranoLibrary.NetCore.pdb
-C:\NICOLAS\ChatGPT\Api\bin\Debug\net8.0\file_index.json
+C:\NICOLAS\ChatGPT\Api\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\NICOLAS\ChatGPT\Api\bin\Debug\net8.0\ClosedXML.dll
+C:\NICOLAS\ChatGPT\Api\bin\Debug\net8.0\ClosedXML.Parser.dll
+C:\NICOLAS\ChatGPT\Api\bin\Debug\net8.0\DocumentFormat.OpenXml.dll
+C:\NICOLAS\ChatGPT\Api\bin\Debug\net8.0\DocumentFormat.OpenXml.Framework.dll
+C:\NICOLAS\ChatGPT\Api\bin\Debug\net8.0\ExcelNumberFormat.dll
+C:\NICOLAS\ChatGPT\Api\bin\Debug\net8.0\itextsharp.dll
+C:\NICOLAS\ChatGPT\Api\bin\Debug\net8.0\RBush.dll
+C:\NICOLAS\ChatGPT\Api\bin\Debug\net8.0\SixLabors.Fonts.dll
+C:\NICOLAS\ChatGPT\Api\bin\Debug\net8.0\System.IO.Packaging.dll
+C:\NICOLAS\ChatGPT\Api\bin\Debug\net8.0\FILES\file_index.json
