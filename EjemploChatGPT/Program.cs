@@ -5,17 +5,39 @@ using System.Threading.Tasks;
 using System.Text;
 using System.Text.Json;
 
-//string apiKey = "sk-svcacct-m1DfQMlewRR7KRy1fc-UjwTAElVlN3RbSCOY5bAib2crfFH6CMwrVw0sVIJwJ4pT3BlbkFJhJRm9MdiiEQ9BFenElH6Hq2jsfnwQQYTEp8cbXfz_VYzqE8UhrhuHMFvJ8Nm5AA";
-string apiUrl = "http://localhost:5000/api/Consultas/human_Query"; // Asegúrate de que la URL coincide con tu servidor
+string apiUrl = "http://localhost:5000/api/Consultas"; // Asegúrate de que la URL coincide con tu servidor
 string? pregunta = "";
 bool correr = true;
+string? origenDatos = "";
 
 Console.WriteLine("Chat con API de Base de Datos");
 
-using HttpClient httpClient = new HttpClient() { Timeout = TimeSpan.FromMinutes(10) };
+// Preguntar al usuario de dónde quiere obtener la información
+while (true)
+{
+    Console.Write("¿De donde queres obtener la información? (Escribir 'de la base' o 'de mis archivos'): ");
+    origenDatos = Console.ReadLine()?.Trim().ToLower();
 
+    if (origenDatos == "de la base" || origenDatos == "de la base de datos")
+    {
+        apiUrl += "/human_query";
+        break;
+    }
+    else if (origenDatos == "de mis archivos" || origenDatos == "de los archivos" || origenDatos == "de archivos" || origenDatos == "archivos")
+    {
+        apiUrl += "/leer_archivos";
+        break;
+    }
+    else
+    {
+        Console.WriteLine("Opción no válida. Inténtalo nuevamente.");
+    }
+}
+
+using HttpClient httpClient = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) };
 while (correr)
 {
+    Console.Write("Haceme una pregunta!");
     Console.Write(">> ");
     pregunta = Console.ReadLine();
 

@@ -1,7 +1,4 @@
-﻿using JPS_ClassLibrary.core.Contexto;
-using OpenAI.Chat;
-using System.Text.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Api.Services;
@@ -12,24 +9,30 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OpenAI;
+using JPS_ClassLibrary.core.Contexto;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Data;
 using System.Data.Common;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Api.Model;
 
 namespace Api.Services
 {
-    public class ConsultasService
+    /// <summary>
+    /// Servicio que c entraliza las consultas que hace el GTP a mi base de datos.
+    /// </summary>
+    public class BdService
     {
         private readonly JPSContexto _contexto;
         private readonly string _apiKey;
         private readonly HttpClient _httpClient;
-        public ConsultasService(JPSContexto contexto, IConfiguration configuration)
+        public BdService(JPSContexto contexto, IConfiguration configuration)
         {
             _contexto = contexto;
             _apiKey = configuration.GetValue<string>("Variables:API_KEY_OPENAI");
-            _httpClient = new HttpClient() { Timeout = TimeSpan.FromMinutes(10) };
+            _httpClient = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) };
         }
 
         /// <summary>
@@ -207,17 +210,24 @@ namespace Api.Services
                 DbConnection connection = _contexto.Database.GetDbConnection();
                 await connection.OpenAsync();
 
-                using var command = connection.CreateCommand();
+                using DbCommand command = connection.CreateCommand();
+                if (!IsValidSqlQuery(sqlQuery))
+                {
+                    return JsonSerializer.Serialize(new { error = "Consulta SQL inválida o peligrosa detectada." });
+                }
+
                 command.CommandText = sqlQuery;
                 command.CommandType = CommandType.Text;
 
-                using var reader = await command.ExecuteReaderAsync();
+
+
+                using DbDataReader reader = await command.ExecuteReaderAsync();
 
                 List<Dictionary<string, object>> resultList = new List<Dictionary<string, object>>();
 
                 while (await reader.ReadAsync())
                 {
-                    var row = new Dictionary<string, object>();
+                    Dictionary<string, object> row = new Dictionary<string, object>();
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
                         row[reader.GetName(i)] = reader.GetValue(i);
@@ -229,9 +239,26 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                return JsonSerializer.Serialize(new { error = $"Error ejecutando SQL: {ex.Message}" });
+                return JsonSerializer.Serialize(new { error = "Hubo un problema al ejecutar la consulta. Revisa la pregunta o intenta con otra consulta." });
             }
         }
+        /// <summary>
+        /// Metodo interno para evitar que el GPT ejecute sentencias "maliciosas" en mi base de datos. (que solo pueda hacer consultass GET).
+        /// </summary>
+        /// <returns></returns>
+        private bool IsValidSqlQuery(string sqlQuery)
+        {
+            string[] forbiddenKeywords = { "DROP", "DELETE", "UPDATE", "INSERT", "ALTER", "TRUNCATE" };
+            foreach (string keyword in forbiddenKeywords)
+            {
+                if (sqlQuery.ToUpper().Contains(keyword))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
 
         public async Task<string> BuildAnswer(string result, string humanQuery)
         {
@@ -266,34 +293,8 @@ namespace Api.Services
         }
 
     }
-    public class QueryStringRecibida
-    {
-        /// <summary>
-        /// Sentencia en lenguaje natural.
-        /// </summary>
-        public string SentenciaNatural { get; set; } = string.Empty;
-    }
-
     public class PostHumanQueryResponse
     {
         public List<Dictionary<string, object>> Result { get; set; } = new();
-    }
-
-    /// <summary>
-    /// Objeto que devuelve OpenAI en la response POST sobre una consulta común.
-    /// </summary>
-    public class OpenAiResponse
-    {
-        public List<Choice> choices { get; set; }
-    }
-
-    public class Choice
-    {
-        public Message message { get; set; }
-    }
-
-    public class Message
-    {
-        public string content { get; set; }
     }
 }

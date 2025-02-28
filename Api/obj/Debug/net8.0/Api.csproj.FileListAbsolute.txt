@@ -105,3 +105,7 @@ C:\NICOLAS\ChatGPT\Api\obj\Debug\net8.0\refint\Api.dll
 C:\NICOLAS\ChatGPT\Api\obj\Debug\net8.0\Api.pdb
 C:\NICOLAS\ChatGPT\Api\obj\Debug\net8.0\Api.genruntimeconfig.cache
 C:\NICOLAS\ChatGPT\Api\obj\Debug\net8.0\ref\Api.dll
+C:\NICOLAS\ChatGPT\Api\obj\Debug\net8.0\Api.sourcelink.json
+C:\NICOLAS\ChatGPT\Api\bin\Debug\net8.0\doTech.UranoLibrary.NetCore.dll
+C:\NICOLAS\ChatGPT\Api\bin\Debug\net8.0\doTech.UranoLibrary.NetCore.pdb
+C:\NICOLAS\ChatGPT\Api\bin\Debug\net8.0\file_index.json

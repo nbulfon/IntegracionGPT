@@ -18,9 +18,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="doTech.UranoLibrary.NetCore">
+      <HintPath>..\..\..\code5\URANO_NET_CORE\Urano_Net_Core_ClassLibrary-Lazy-Soporte-Postgres-v.1.1.0.0\Urano_Net_Core_ClassLibrary\bin\Debug\net7.0\doTech.UranoLibrary.NetCore.dll</HintPath>
+    </Reference>
     <Reference Include="JPS-ClassLibrary">
       <HintPath>..\..\..\code5\DLLContainer\DLLContainer\JPS\JPS-ClassLibrary.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="FILES\" />
   </ItemGroup>
 
 </Project>

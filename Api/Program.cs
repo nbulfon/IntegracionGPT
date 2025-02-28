@@ -1,6 +1,7 @@
 using Api.Services;
 using JPS_ClassLibrary.core.Contexto;
 using Microsoft.EntityFrameworkCore;
+using Urano_Net_Core_ClassLibrary.Core.Context;
 
 var configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetCurrentDirectory())
@@ -9,6 +10,7 @@ var configuration = new ConfigurationBuilder()
 
 var optionsBuilder = new DbContextOptionsBuilder<JPSContexto>();
 var connectionStringJPS = configuration.GetConnectionString("connectionstring");
+var connectionStringUrano = configuration.GetConnectionString("Urano");
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +22,10 @@ builder.Services.AddControllers();
 // Add services to the container.
 
 builder.Services.AddDbContext<JPSContexto>(options => options.UseLazyLoadingProxies().UseNpgsql(connectionStringJPS));
+builder.Services.AddDbContext<UranoContext>(options => options.UseLazyLoadingProxies().UseNpgsql(connectionStringUrano));
 
-builder.Services.AddScoped<ConsultasService>();
+builder.Services.AddScoped<BdService>();
+builder.Services.AddScoped<ArchivosService>();
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 

@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Api.Services;
-using JPS_ClassLibrary.core.Contexto;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OpenAI;
+using Api.Services;
+using JPS_ClassLibrary.core.Contexto;
+using Microsoft.AspNetCore.Mvc;
+using Api.Model;
 
 namespace Api.Controllers
 {
@@ -18,15 +18,19 @@ namespace Api.Controllers
     [Route("/api/[controller]")]
     public class ConsultasController : ControllerBase
     {
-        private readonly ConsultasService _consultasService;
+        private readonly BdService _baseDeDatosService;
+        private readonly ArchivosService _archivosService;
         private readonly JPSContexto _contexto;
+        private readonly string _folderPath;
         private readonly IConfiguration _configuration;
 
         public ConsultasController(JPSContexto contexto, IConfiguration configuration)
         {
             _contexto = contexto;
             _configuration = configuration;
-            _consultasService = new ConsultasService(_contexto, _configuration);
+            _baseDeDatosService = new BdService(_contexto, _configuration);
+            _archivosService = new ArchivosService(_configuration);
+            _folderPath = configuration.GetValue<string>("Variables:PATH_CARPETA_ARCHIVOS");
         }
 
         /// <summary>
@@ -41,30 +45,86 @@ namespace Api.Controllers
                 /* ej -> que cantidad de Informes hay en mi base de datos ?
                 */
 
-                // Transforma la pregunta a sentencia SQL
-                string sqlQuery = await _consultasService.HumanQueryToSql(queryString.SentenciaNatural);
+                // 1. Transforma la pregunta del usuario a una sentencia SQL ->
+                string sqlQuery = await _baseDeDatosService.HumanQueryToSql(queryString.SentenciaNatural);
                 if (string.IsNullOrEmpty(sqlQuery))
                 {
                     return BadRequest(new { error = "Falló la generación de la consulta SQL" });
                 }
 
-                // Hace la consulta a la base de datos.
+                // 2. Con la sentencia SQL, hago la consulta a la base de datos ->
                 // ejemplo -> SELECT * FROM USUARIO WHERE MAIL = ...
-                string result = await _consultasService.QueryDatabase(sqlQuery);
+                string result = await _baseDeDatosService.QueryDatabase(sqlQuery);
 
-                string answer = await _consultasService.BuildAnswer(result, queryString.SentenciaNatural);
+                // 3. Con la respuesta desde la base de datos, armo una respuesta para mandarle armado al usuario ->
+                string answer = await _baseDeDatosService.BuildAnswer(result, queryString.SentenciaNatural);
 
                 if (string.IsNullOrEmpty(answer))
                 {
                     return BadRequest(new { error = "Falló la generación de la respuesta" });
                 }
 
+                // devuelvo response al usuario ->
                 return Ok(new { answer });
             }
-
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Endpoint para buscar en los archivos indexados y responder la pregunta del usuario.
+        /// </summary>
+        /// <param name="queryString"></param>
+        /// <returns></returns>
+        [HttpPost("leer_archivos")]
+        public async Task<IActionResult> SearchFiles([FromBody] QueryStringRecibida queryString)
+        {
+            try
+            {
+                // Indexar los archivos al iniciar la API (se puede hacer opcionalmente)
+                if (!System.IO.File.Exists("file_index.json"))
+                {
+                    _archivosService.IndexFiles(_folderPath);
+                    Console.WriteLine("Archivos indexados.");
+                }
+                else
+                {
+                    // Cargar el índice existente y verificar si está vacío o necesita actualización
+                    try
+                    {
+                        var existingIndex = JsonSerializer.Deserialize<List<FileChunk>>(System.IO.File.ReadAllText("file_index.json"));
+                        if (existingIndex == null || existingIndex.Count == 0)
+                        {
+                            _archivosService.IndexFiles(_folderPath);
+                            Console.WriteLine("Índice vacío detectado. Reindexando archivos.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Índice de archivos cargado correctamente.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error al leer el índice. Reindexando. Detalles: {ex.Message}");
+                        _archivosService.IndexFiles(_folderPath);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(queryString.SentenciaNatural))
+                {
+                    return BadRequest(new { error = "La pregunta no puede estar vacía." });
+                }
+
+                // Buscar en los archivos indexados y obtener respuesta
+                string response = await _archivosService.SearchAndAnswerAsync(queryString.SentenciaNatural);
+
+                return Ok(new { answer = response });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
             }
         }
     }

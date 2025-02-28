@@ -3,23 +3,23 @@
   "WorkspaceRootPath": "C:\\NICOLAS\\ChatGPT\\EjemploChatGPT\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F8631A9B-4BD2-4715-AEC1-D4C58AEFCD6E}|EjemploChatGPT.csproj|c:\\nicolas\\chatgpt\\ejemplochatgpt\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8631A9B-4BD2-4715-AEC1-D4C58AEFCD6E}|EjemploChatGPT.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F75D7B87-4915-4A70-A941-9B6914979ABF}|..\\Api\\Api.csproj|c:\\nicolas\\chatgpt\\api\\controllers\\consultascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F75D7B87-4915-4A70-A941-9B6914979ABF}|..\\Api\\Api.csproj|c:\\nicolas\\chatgpt\\api\\services\\consultasservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F75D7B87-4915-4A70-A941-9B6914979ABF}|..\\Api\\Api.csproj|c:\\nicolas\\chatgpt\\api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{F75D7B87-4915-4A70-A941-9B6914979ABF}|..\\Api\\Api.csproj|c:\\nicolas\\chatgpt\\api\\services\\archivosservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F75D7B87-4915-4A70-A941-9B6914979ABF}|..\\Api\\Api.csproj|c:\\nicolas\\chatgpt\\api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\nicol\\AppData\\Local\\Temp\\.vsdbgsrc\\4dcf567db33b8407e8e7e85491df71d46c06985d33f5ad8d904e52c3b325c6c5\\ExecutionContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F8631A9B-4BD2-4715-AEC1-D4C58AEFCD6E}|EjemploChatGPT.csproj|c:\\nicolas\\chatgpt\\ejemplochatgpt\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F8631A9B-4BD2-4715-AEC1-D4C58AEFCD6E}|EjemploChatGPT.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F75D7B87-4915-4A70-A941-9B6914979ABF}|..\\Api\\Api.csproj|c:\\nicolas\\chatgpt\\api\\model\\openairesponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F75D7B87-4915-4A70-A941-9B6914979ABF}|..\\Api\\Api.csproj|c:\\nicolas\\chatgpt\\api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -29,7 +29,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 10,
           "Children": [
             {
               "$type": "Bookmark",
@@ -57,80 +57,80 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ExecutionContext.cs",
-              "DocumentMoniker": "C:\\Users\\nicol\\AppData\\Local\\Temp\\.vsdbgsrc\\4dcf567db33b8407e8e7e85491df71d46c06985d33f5ad8d904e52c3b325c6c5\\ExecutionContext.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\Users\\nicol\\AppData\\Local\\Temp\\.vsdbgsrc\\4dcf567db33b8407e8e7e85491df71d46c06985d33f5ad8d904e52c3b325c6c5\\ExecutionContext.cs",
-              "ToolTip": "C:\\Users\\nicol\\AppData\\Local\\Temp\\.vsdbgsrc\\4dcf567db33b8407e8e7e85491df71d46c06985d33f5ad8d904e52c3b325c6c5\\ExecutionContext.cs [Read Only]",
-              "RelativeToolTip": "..\\..\\..\\Users\\nicol\\AppData\\Local\\Temp\\.vsdbgsrc\\4dcf567db33b8407e8e7e85491df71d46c06985d33f5ad8d904e52c3b325c6c5\\ExecutionContext.cs [Read Only]",
-              "ViewState": "AQIAAH0AAAAAAAAAAAAhwIkAAAADAAAA",
+              "DocumentIndex": 4,
+              "Title": "OpenAiResponse.cs",
+              "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\Api\\Model\\OpenAiResponse.cs",
+              "RelativeDocumentMoniker": "..\\Api\\Model\\OpenAiResponse.cs",
+              "ToolTip": "C:\\NICOLAS\\ChatGPT\\Api\\Model\\OpenAiResponse.cs",
+              "RelativeToolTip": "..\\Api\\Model\\OpenAiResponse.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T12:32:27.904Z",
-              "EditorCaption": " [Read Only]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "launchSettings.json",
-              "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\Api\\Properties\\launchSettings.json",
-              "RelativeDocumentMoniker": "..\\Api\\Properties\\launchSettings.json",
-              "ToolTip": "C:\\NICOLAS\\ChatGPT\\Api\\Properties\\launchSettings.json",
-              "RelativeToolTip": "..\\Api\\Properties\\launchSettings.json",
-              "ViewState": "AQIAACcAAAAAAAAAAAAAAEgAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-02-27T21:55:10.944Z",
+              "WhenOpened": "2025-02-28T15:06:46.758Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\Api\\Program.cs",
+              "RelativeDocumentMoniker": "..\\Api\\Program.cs",
+              "ToolTip": "C:\\NICOLAS\\ChatGPT\\Api\\Program.cs",
+              "RelativeToolTip": "..\\Api\\Program.cs",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAABgAAAA2AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-28T13:54:50.188Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\Api\\appsettings.json",
               "RelativeDocumentMoniker": "..\\Api\\appsettings.json",
               "ToolTip": "C:\\NICOLAS\\ChatGPT\\Api\\appsettings.json",
               "RelativeToolTip": "..\\Api\\appsettings.json",
-              "ViewState": "AQIAAAQAAAAAAAAAAAAAwA0AAAATAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAgAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-02-27T20:35:07.356Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\EjemploChatGPT\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\NICOLAS\\ChatGPT\\EjemploChatGPT\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACMAAAAIAAAA",
+              "ViewState": "AQIAAB4AAAAAAAAAAAAAABsAAAAcAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-27T13:42:46.626Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "ConsultasController.cs",
               "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\Api\\Controllers\\ConsultasController.cs",
               "RelativeDocumentMoniker": "..\\Api\\Controllers\\ConsultasController.cs",
               "ToolTip": "C:\\NICOLAS\\ChatGPT\\Api\\Controllers\\ConsultasController.cs",
               "RelativeToolTip": "..\\Api\\Controllers\\ConsultasController.cs",
-              "ViewState": "AQIAADMAAAAAAAAAAAAYwDgAAAAQAAAA",
+              "ViewState": "AQIAAFEAAAAAAAAAAAAywF4AAAAXAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-27T13:27:09.168Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ConsultasService.cs",
-              "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\Api\\Services\\ConsultasService.cs",
-              "RelativeDocumentMoniker": "..\\Api\\Services\\ConsultasService.cs",
-              "ToolTip": "C:\\NICOLAS\\ChatGPT\\Api\\Services\\ConsultasService.cs",
-              "RelativeToolTip": "..\\Api\\Services\\ConsultasService.cs",
-              "ViewState": "AQIAAGcAAAAAAAAAAAAhwHMAAAAMAAAA",
+              "DocumentIndex": 1,
+              "Title": "ArchivosService.cs",
+              "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\Api\\Services\\ArchivosService.cs",
+              "RelativeDocumentMoniker": "..\\Api\\Services\\ArchivosService.cs",
+              "ToolTip": "C:\\NICOLAS\\ChatGPT\\Api\\Services\\ArchivosService.cs",
+              "RelativeToolTip": "..\\Api\\Services\\ArchivosService.cs",
+              "ViewState": "AQIAABMAAAAAAAAAAAAEwBgAAAAYAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-27T13:45:33.103Z",
+              "WhenOpened": "2025-02-28T14:18:41.627Z",
               "EditorCaption": ""
             }
           ]

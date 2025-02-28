@@ -17,3 +17,4 @@ C:\NICOLAS\ChatGPT\EjemploChatGPT\obj\Debug\net8.0\refint\EjemploChatGPT.dll
 C:\NICOLAS\ChatGPT\EjemploChatGPT\obj\Debug\net8.0\EjemploChatGPT.pdb
 C:\NICOLAS\ChatGPT\EjemploChatGPT\obj\Debug\net8.0\EjemploChatGPT.genruntimeconfig.cache
 C:\NICOLAS\ChatGPT\EjemploChatGPT\obj\Debug\net8.0\ref\EjemploChatGPT.dll
+C:\NICOLAS\ChatGPT\EjemploChatGPT\obj\Debug\net8.0\EjemploChatGPT.sourcelink.json

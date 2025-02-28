@@ -13,6 +13,7 @@
           "Npgsql.EntityFrameworkCore.PostgreSQL": "8.0.0",
           "Npgsql.EntityFrameworkCore.PostgreSQL.Design": "1.1.0",
           "OpenAI": "2.1.0",
+          "doTech.UranoLibrary.NetCore": "1.0.6.0",
           "JPS-ClassLibrary": "1.59.0.0"
         },
         "runtime": {
@@ -1245,6 +1246,14 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
+      "doTech.UranoLibrary.NetCore/1.0.6.0": {
+        "runtime": {
+          "doTech.UranoLibrary.NetCore.dll": {
+            "assemblyVersion": "1.0.6.0",
+            "fileVersion": "1.0.6.0"
+          }
+        }
+      },
       "JPS-ClassLibrary/1.59.0.0": {
         "runtime": {
           "JPS-ClassLibrary.dll": {
@@ -2114,6 +2123,11 @@
       "sha512": "sha512-5zJ0XDxAIg8iy+t4aMnQAu0MqVbqyvfoUVl1yDV61xdo3Vth45oA2FoY4pPkxYAH5f8ixpmTqXeEIya95x0aCQ==",
       "path": "system.xml.xdocument/4.3.0",
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
+    },
+    "doTech.UranoLibrary.NetCore/1.0.6.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
     },
     "JPS-ClassLibrary/1.59.0.0": {
       "type": "reference",
