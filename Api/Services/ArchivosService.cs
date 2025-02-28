@@ -39,7 +39,7 @@ namespace Api.Services
                         // Extrae el texto del archivo (PDF, Word o Excel)
                         string content = ExtractTextFromFile(file);
                         // Divide el texto en fragmentos de 1000 caracteres
-                        List<string> chunks = SplitIntoChunks(content, 1000);
+                        List<string> chunks = SepararEnFragmentos(content, 3000);
 
                         // Guarda cada fragmento en la lista de índice
                         for (int i = 0; i < chunks.Count; i++)
@@ -124,12 +124,12 @@ namespace Api.Services
         /// <summary>
         /// Divide un texto en fragmentos de tamaño determinado para facilitar su procesamiento.
         /// </summary>
-        private List<string> SplitIntoChunks(string text, int chunkSize)
+        private List<string> SepararEnFragmentos(string text, int tamanioFragmentos)
         {
             var chunks = new List<string>();
-            for (int i = 0; i < text.Length; i += chunkSize)
+            for (int i = 0; i < text.Length; i += tamanioFragmentos)
             {
-                chunks.Add(text.Substring(i, Math.Min(chunkSize, text.Length - i)));
+                chunks.Add(text.Substring(i, Math.Min(tamanioFragmentos, text.Length - i)));
             }
             return chunks;
         }

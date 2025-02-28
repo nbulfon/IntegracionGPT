@@ -1,0 +1,69 @@
+﻿@page "/"
+@using AsistenteVirtual.Core.Model
+@using AsistenteVirtual.Core.Service
+@inject ChatService _service;
+
+<h3 class="chat-title">Chat AI</h3>
+
+@if (string.IsNullOrEmpty(TipoDeConsulta))
+{
+    <div class="data-selection">
+        <p>¿De dónde quieres obtener la información?</p>
+        <button @onclick="() => SetDataSource(true)">📊 Base de Datos</button>
+        <button @onclick="() => SetDataSource(false)">📂 Archivos</button>
+    </div>
+}
+else
+{
+    <div class="chat-container">
+        <div class="messages">
+            @foreach (var message in Messages)
+            {
+                <div class="@(message.IsUserMessage ? "user-message" : "bot-message")">
+                    @message.Content
+                </div>
+            }
+        </div>
+
+        <div class="input-container">
+            <input @bind="UserInput" @bind:event="oninput" placeholder="Escribe tu pregunta..." class="chat-input" />
+            <button @onclick="SendMessage" class="chat-button">Enviar</button>
+        </div>
+
+        <div class="volver-container">
+            <button class="volver-button" @onclick="ResetSelection">🔄 Volver</button>
+        </div>
+    </div>
+}
+
+@code {
+    private string UserInput { get; set; } = string.Empty;
+    private List<ChatMessage> Messages { get; set; } = new List<ChatMessage>();
+    public string TipoDeConsulta { get; set; } = string.Empty;
+
+    private void SetDataSource(bool leeLaBD)
+    {
+        TipoDeConsulta = (leeLaBD) ? "consultarBaseDeDatos" : "leerArchivos";
+        StateHasChanged();
+    }
+
+    private async Task SendMessage()
+    {
+        if (string.IsNullOrWhiteSpace(UserInput))
+            return;
+
+        Messages.Add(new ChatMessage { Content = UserInput, IsUserMessage = true });
+
+        string response = await _service.SendMessageToApi(TipoDeConsulta, UserInput);
+
+        Messages.Add(new ChatMessage { Content = response, IsUserMessage = false });
+
+        UserInput = string.Empty;
+    }
+
+    private void ResetSelection()
+    {
+        TipoDeConsulta = null; // Vuelve a la selección de fuente de datos
+        Messages.Clear(); // Opcional: Limpia el chat al cambiar de fuente de datos
+    }
+}

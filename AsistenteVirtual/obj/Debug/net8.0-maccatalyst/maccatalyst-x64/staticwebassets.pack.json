@@ -1,0 +1,49 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\NICOLAS\\ChatGPT\\AsistenteVirtual\\obj\\Debug\\net8.0-maccatalyst\\maccatalyst-x64\\scopedcss\\bundle\\AsistenteVirtual.styles.css",
+      "PackagePath": "staticwebassets\\AsistenteVirtual.styles.css"
+    },
+    {
+      "Id": "C:\\NICOLAS\\ChatGPT\\AsistenteVirtual\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "C:\\NICOLAS\\ChatGPT\\AsistenteVirtual\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\NICOLAS\\ChatGPT\\AsistenteVirtual\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\NICOLAS\\ChatGPT\\AsistenteVirtual\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\NICOLAS\\ChatGPT\\AsistenteVirtual\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\NICOLAS\\ChatGPT\\AsistenteVirtual\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0-maccatalyst\\maccatalyst-x64\\staticwebassets\\msbuild.AsistenteVirtual.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0-maccatalyst\\maccatalyst-x64\\staticwebassets\\msbuild.build.AsistenteVirtual.props",
+      "PackagePath": "build\\AsistenteVirtual.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0-maccatalyst\\maccatalyst-x64\\staticwebassets\\msbuild.buildMultiTargeting.AsistenteVirtual.props",
+      "PackagePath": "buildMultiTargeting\\AsistenteVirtual.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0-maccatalyst\\maccatalyst-x64\\staticwebassets\\msbuild.buildTransitive.AsistenteVirtual.props",
+      "PackagePath": "buildTransitive\\AsistenteVirtual.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -1,0 +1,9 @@
+﻿@using AsistenteVirtual.Components.Layout
+<Router AppAssembly="@typeof(MauiProgram).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+    </Found>
+    <NotFound>
+        <h3>Página no encontrada</h3>
+    </NotFound>
+</Router>

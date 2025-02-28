@@ -25,7 +25,7 @@ while (true)
     }
     else if (origenDatos == "de mis archivos" || origenDatos == "de los archivos" || origenDatos == "de archivos" || origenDatos == "archivos")
     {
-        apiUrl += "/leer_archivos";
+        apiUrl += "/leerArchivos";
         break;
     }
     else

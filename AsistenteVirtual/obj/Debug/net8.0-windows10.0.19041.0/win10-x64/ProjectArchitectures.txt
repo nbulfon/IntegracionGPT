@@ -1,0 +1,1 @@
+C:\NICOLAS\ChatGPT\AsistenteVirtual\AsistenteVirtual.csproj;x64

@@ -80,7 +80,7 @@ namespace Api.Controllers
         /// </summary>
         /// <param name="queryString"></param>
         /// <returns></returns>
-        [HttpPost("leer_archivos")]
+        [HttpPost("leerArchivos")]
         public async Task<IActionResult> ConsultarArchivos([FromBody] QueryStringRecibida queryString)
         {
             try
