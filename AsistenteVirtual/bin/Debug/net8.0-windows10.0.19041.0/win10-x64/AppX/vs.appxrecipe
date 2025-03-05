@@ -29,7 +29,7 @@
     <AppXManifest Include="C:\NICOLAS\ChatGPT\AsistenteVirtual\bin\Debug\net8.0-windows10.0.19041.0\win10-x64\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2025-02-28T20:24:18.379</Modified>
+      <Modified>2025-03-05T12:56:49.611</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
@@ -43,11 +43,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\NICOLAS\ChatGPT\AsistenteVirtual\bin\Debug\net8.0-windows10.0.19041.0\win10-x64\AsistenteVirtual.dll">
       <PackagePath>AsistenteVirtual.dll</PackagePath>
-      <Modified>2025-02-28T20:24:16.517</Modified>
+      <Modified>2025-03-05T12:27:04.867</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\NICOLAS\ChatGPT\AsistenteVirtual\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\apphost.exe">
       <PackagePath>AsistenteVirtual.exe</PackagePath>
-      <Modified>2025-02-28T20:24:16.550</Modified>
+      <Modified>2025-03-05T12:27:05.028</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\NICOLAS\ChatGPT\AsistenteVirtual\Resources\Raw\AboutAssets.txt">
       <PackagePath>AboutAssets.txt</PackagePath>

@@ -3,7 +3,13 @@
   "WorkspaceRootPath": "C:\\NICOLAS\\ChatGPT\\EjemploChatGPT\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3E82FE54-7E41-4BFC-8F5C-0A08AA45EB0F}|..\\AsistenteVirtual\\AsistenteVirtual.csproj|c:\\nicolas\\chatgpt\\asistentevirtual\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+      "AbsoluteMoniker": "D:0:0:{F75D7B87-4915-4A70-A941-9B6914979ABF}|..\\Api\\Api.csproj|c:\\nicolas\\chatgpt\\api\\services\\archivosservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3E82FE54-7E41-4BFC-8F5C-0A08AA45EB0F}|..\\AsistenteVirtual\\AsistenteVirtual.csproj|c:\\nicolas\\chatgpt\\asistentevirtual\\core\\service\\chatservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F75D7B87-4915-4A70-A941-9B6914979ABF}|..\\Api\\Api.csproj|c:\\nicolas\\chatgpt\\api\\controllers\\consultascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3E82FE54-7E41-4BFC-8F5C-0A08AA45EB0F}|..\\AsistenteVirtual\\AsistenteVirtual.csproj|c:\\nicolas\\chatgpt\\asistentevirtual\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
@@ -11,15 +17,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{F8631A9B-4BD2-4715-AEC1-D4C58AEFCD6E}|EjemploChatGPT.csproj|c:\\nicolas\\chatgpt\\ejemplochatgpt\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F8631A9B-4BD2-4715-AEC1-D4C58AEFCD6E}|EjemploChatGPT.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F75D7B87-4915-4A70-A941-9B6914979ABF}|..\\Api\\Api.csproj|c:\\nicolas\\chatgpt\\api\\controllers\\consultascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F75D7B87-4915-4A70-A941-9B6914979ABF}|..\\Api\\Api.csproj|c:\\nicolas\\chatgpt\\api\\services\\archivosservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3E82FE54-7E41-4BFC-8F5C-0A08AA45EB0F}|..\\AsistenteVirtual\\AsistenteVirtual.csproj|c:\\nicolas\\chatgpt\\asistentevirtual\\core\\service\\chatservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3E82FE54-7E41-4BFC-8F5C-0A08AA45EB0F}|..\\AsistenteVirtual\\AsistenteVirtual.csproj|c:\\nicolas\\chatgpt\\asistentevirtual\\mauiprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
@@ -35,7 +32,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 12,
           "Children": [
             {
               "$type": "Bookmark",
@@ -63,20 +60,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "site.css",
-              "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\AsistenteVirtual\\wwwroot\\css\\site.css",
-              "RelativeDocumentMoniker": "..\\AsistenteVirtual\\wwwroot\\css\\site.css",
-              "ToolTip": "C:\\NICOLAS\\ChatGPT\\AsistenteVirtual\\wwwroot\\css\\site.css",
-              "RelativeToolTip": "..\\AsistenteVirtual\\wwwroot\\css\\site.css",
-              "ViewState": "AQIAANAAAAAAAAAAAAAqwOcAAAAFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-02-28T19:51:52.589Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 5,
               "Title": "MauiProgram.cs",
               "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\AsistenteVirtual\\MauiProgram.cs",
               "RelativeDocumentMoniker": "..\\AsistenteVirtual\\MauiProgram.cs",
@@ -84,12 +68,11 @@
               "RelativeToolTip": "..\\AsistenteVirtual\\MauiProgram.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAATAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T19:25:33.715Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-28T19:25:33.715Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 6,
               "Title": "app.css",
               "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\AsistenteVirtual\\wwwroot\\css\\app.css",
               "RelativeDocumentMoniker": "..\\AsistenteVirtual\\wwwroot\\css\\app.css",
@@ -97,12 +80,11 @@
               "RelativeToolTip": "..\\AsistenteVirtual\\wwwroot\\css\\app.css",
               "ViewState": "AQIAAA8AAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-02-28T19:21:25.378Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-28T19:21:25.378Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 1,
               "Title": "ChatService.cs",
               "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\AsistenteVirtual\\Core\\Service\\ChatService.cs",
               "RelativeDocumentMoniker": "..\\AsistenteVirtual\\Core\\Service\\ChatService.cs",
@@ -115,7 +97,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Home.razor",
               "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\AsistenteVirtual\\Components\\Pages\\Home.razor",
               "RelativeDocumentMoniker": "..\\AsistenteVirtual\\Components\\Pages\\Home.razor",
@@ -123,12 +105,11 @@
               "RelativeToolTip": "..\\AsistenteVirtual\\Components\\Pages\\Home.razor",
               "ViewState": "AQIAADAAAAAAAAAAAAAAAEMAAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-02-28T18:29:04.989Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-28T18:29:04.989Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\EjemploChatGPT\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -141,26 +122,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "ConsultasController.cs",
               "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\Api\\Controllers\\ConsultasController.cs",
               "RelativeDocumentMoniker": "..\\Api\\Controllers\\ConsultasController.cs",
               "ToolTip": "C:\\NICOLAS\\ChatGPT\\Api\\Controllers\\ConsultasController.cs",
               "RelativeToolTip": "..\\Api\\Controllers\\ConsultasController.cs",
-              "ViewState": "AQIAAFcAAAAAAAAAAADgv2AAAAA5AAAA",
+              "ViewState": "AQIAAEoAAAAAAAAAAAAmwIYAAABBAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-27T13:27:09.168Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "ArchivosService.cs",
               "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\Api\\Services\\ArchivosService.cs",
               "RelativeDocumentMoniker": "..\\Api\\Services\\ArchivosService.cs",
               "ToolTip": "C:\\NICOLAS\\ChatGPT\\Api\\Services\\ArchivosService.cs",
               "RelativeToolTip": "..\\Api\\Services\\ArchivosService.cs",
-              "ViewState": "AQIAACMAAAAAAAAAAAAAAGwAAAA8AAAA",
+              "ViewState": "AQIAAGoAAAAAAAAAAAAhwC0AAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-28T19:47:59.229Z",
               "EditorCaption": ""

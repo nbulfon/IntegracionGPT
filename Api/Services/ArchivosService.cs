@@ -4,7 +4,6 @@ using DocumentFormat.OpenXml.Packaging;
 using ClosedXML.Excel;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
-using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 using Api.Model;
 
 namespace Api.Services
@@ -13,55 +12,104 @@ namespace Api.Services
     {
         private readonly string _apiKey;
         private readonly HttpClient _httpClient;
+        private readonly int _porcentajeCaracteresAGuardarFile;
          // Ruta del índice de archivos
 
         public ArchivosService(IConfiguration configuration)
         {
             _apiKey = configuration.GetValue<string>("Variables:API_KEY_OPENAI");
+            _porcentajeCaracteresAGuardarFile = ( configuration.GetValue<int>("Variables:PORCENTAJE_CARACTERES_FILE_A_GUARDAR") ) /100;
             _httpClient = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) };
         }
 
+        #region Index json
 
         /// <summary>
         /// Indexa archivos PDF, Word y Excel, dividiéndolos en fragmentos manejables.
         /// </summary>
         public void IndexFiles(string folderPath, string indexFilePath)
         {
-            var fileIndex = new List<FragmentoArchivo>();
+            List<FragmentoArchivo> fileIndex = new List<FragmentoArchivo>();
 
             // Verifica si el directorio existe
             if (Directory.Exists(folderPath))
             {
-                foreach (string file in Directory.GetFiles(folderPath))
+                foreach (string fileName in Directory.GetFiles(folderPath))
                 {
-                    try
-                    {
-                        // Extrae el texto del archivo (PDF, Word o Excel)
-                        string content = ExtractTextFromFile(file);
-                        // Divide el texto en fragmentos de 1000 caracteres
-                        List<string> chunks = SepararEnFragmentos(content, 3000);
-
-                        // Guarda cada fragmento en la lista de índice
-                        for (int i = 0; i < chunks.Count; i++)
-                        {
-                            fileIndex.Add(new FragmentoArchivo
-                            {
-                                NombreArchivo = System.IO.Path.GetFileName(file),
-                                IndiceFragmento = i,
-                                Contenido = chunks[i]
-                            });
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error al leer el archivo {file}: {ex.Message}");
-                    }
+                    fileIndex = ProcesarArchivosEnIndexJson(fileIndex,fileName);
                 }
             }
 
             // Guarda el índice en un archivo JSON
             File.WriteAllText(indexFilePath, JsonSerializer.Serialize(fileIndex, new JsonSerializerOptions { WriteIndented = true }));
         }
+        private List<FragmentoArchivo> ProcesarArchivosEnIndexJson(List<FragmentoArchivo> fileIndex,string file)
+        {
+            try
+            {
+                // Extrae el texto del archivo (PDF, Word o Excel)
+                string content = ExtractTextFromFile(file);
+
+                // saco el 60% del total del archivo
+                int caracteresAGuardar = (int)(content.Length * _porcentajeCaracteresAGuardarFile);
+
+                List<string> fragmentos = SepararEnFragmentos(content, caracteresAGuardar);
+
+                // Guarda cada fragmento en la lista de índice
+                for (int i = 0; i < fragmentos.Count; i++)
+                {
+                    fileIndex.Add(new FragmentoArchivo
+                    {
+                        NombreArchivo = System.IO.Path.GetFileName(file),
+                        IndiceFragmento = i,
+                        Contenido = fragmentos[i]
+                    });
+                }
+
+                return fileIndex;
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine($"Error al leer el archivo {file}: {ex.Message}");
+                throw new Exception($"Error al leer el archivo {file}: {ex.Message}");
+            }
+        }
+        /// <summary>
+        /// Agrega nuevos archivos al índice existente sin eliminar los anteriores.
+        /// </summary>
+        public void AgregarArchivosAlIndex(string folderPath, string indexFilePath, List<string> nuevosArchivos)
+        {
+            try
+            {
+                // Cargar índice actual
+                List<FragmentoArchivo> fileIndex = new List<FragmentoArchivo>();
+
+                if (System.IO.File.Exists(indexFilePath))
+                {
+                    string json = System.IO.File.ReadAllText(indexFilePath);
+                    fileIndex = (JsonSerializer.Deserialize<List<FragmentoArchivo>>(json) != null) ? JsonSerializer.Deserialize<List<FragmentoArchivo>>(json) : new List<FragmentoArchivo>();
+                }
+
+                // Procesar nuevos archivos y añadirlos al índice
+                foreach (string fileName in nuevosArchivos)
+                {
+                    fileIndex = ProcesarArchivosEnIndexJson(fileIndex,fileName);
+                }
+
+                // Guardar el índice actualizado
+                System.IO.File.WriteAllText(indexFilePath, JsonSerializer.Serialize(fileIndex, new JsonSerializerOptions { WriteIndented = true }));
+
+                Console.WriteLine($"Se añadieron {nuevosArchivos.Count} archivos al índice.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al actualizar el índice: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+        #region Extraer texto
 
         /// <summary>
         /// Determina el tipo de archivo y extrae su contenido de manera apropiada.
@@ -121,17 +169,19 @@ namespace Api.Services
             return text.ToString();
         }
 
+        #endregion
+
         /// <summary>
         /// Divide un texto en fragmentos de tamaño determinado para facilitar su procesamiento.
         /// </summary>
-        private List<string> SepararEnFragmentos(string text, int tamanioFragmentos)
+        private List<string> SepararEnFragmentos(string text, int cantidadCaracteres)
         {
-            var chunks = new List<string>();
-            for (int i = 0; i < text.Length; i += tamanioFragmentos)
+            List<string> fragmentos = new List<string>();
+            for (int i = 0; i < text.Length; i += cantidadCaracteres)
             {
-                chunks.Add(text.Substring(i, Math.Min(tamanioFragmentos, text.Length - i)));
+                fragmentos.Add(text.Substring(i, Math.Min(cantidadCaracteres, text.Length - i)));
             }
-            return chunks;
+            return fragmentos;
         }
 
         /// <summary>

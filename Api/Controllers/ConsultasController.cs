@@ -112,28 +112,43 @@ namespace Api.Controllers
             {
                 Console.WriteLine("No se encontró el índice. Indexando archivos...");
                 _archivosService.IndexFiles(_folderPath, _indexFilePath);
+                return;
             }
-            else
+
+            try
             {
-                try
+                // cargo índice existente
+                List<FragmentoArchivo> existingIndex = new List<FragmentoArchivo>();
+                if (JsonSerializer.Deserialize<List<FragmentoArchivo>>(System.IO.File.ReadAllText(_indexFilePath)) != null)
                 {
-                    var existingIndex = JsonSerializer.Deserialize<List<FragmentoArchivo>>(System.IO.File.ReadAllText(_indexFilePath));
-                    if (existingIndex == null || existingIndex.Count == 0)
-                    {
-                        Console.WriteLine("Índice vacío detectado. Reindexando archivos...");
-                        _archivosService.IndexFiles(_folderPath, _indexFilePath);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Índice de archivos cargado correctamente.");
-                    }
+                    existingIndex = JsonSerializer.Deserialize<List<FragmentoArchivo>>(System.IO.File.ReadAllText(_indexFilePath));
                 }
-                catch (Exception ex)
+
+                // obtengo la lista de archivos actuales en la carpeta
+                HashSet<string> archivosEnCarpeta = new HashSet<string>(Directory.GetFiles(_folderPath).Select(Path.GetFileName));
+                HashSet<string> archivosIndexados = new HashSet<string>(existingIndex.Select(f => f.NombreArchivo));
+
+                // si hay archivos nuevos que no están en el índice, hago una re-indexacion
+                List<string> archivosNuevos = archivosEnCarpeta.Except(archivosIndexados).ToList();
+                if (archivosNuevos.Count > 0)
                 {
-                    Console.WriteLine($"Error al leer el índice. Se requiere reindexación. Detalles: {ex.Message}");
-                    _archivosService.IndexFiles(_folderPath, _indexFilePath);
+                    _archivosService.AgregarArchivosAlIndex(_folderPath, _indexFilePath, archivosNuevos);
                 }
+
+                // Si hay archivos eliminados, se quitan del índice
+                List<string> archivosEliminados = archivosIndexados.Except(archivosEnCarpeta).ToList();
+                if (archivosEliminados.Count > 0)
+                {
+                    existingIndex.RemoveAll(f => archivosEliminados.Contains(f.NombreArchivo));
+                    System.IO.File.WriteAllText(_indexFilePath, JsonSerializer.Serialize(existingIndex, new JsonSerializerOptions { WriteIndented = true }));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al leer el índice. Se requiere reindexación completa. Detalles: {ex.Message}");
+                //_archivosService.IndexFiles(_folderPath, _indexFilePath);
             }
         }
+
     }
 }
