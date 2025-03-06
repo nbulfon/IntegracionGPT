@@ -3,13 +3,13 @@
   "WorkspaceRootPath": "C:\\NICOLAS\\ChatGPT\\EjemploChatGPT\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{F75D7B87-4915-4A70-A941-9B6914979ABF}|..\\Api\\Api.csproj|c:\\nicolas\\chatgpt\\api\\controllers\\consultascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F75D7B87-4915-4A70-A941-9B6914979ABF}|..\\Api\\Api.csproj|c:\\nicolas\\chatgpt\\api\\services\\archivosservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3E82FE54-7E41-4BFC-8F5C-0A08AA45EB0F}|..\\AsistenteVirtual\\AsistenteVirtual.csproj|c:\\nicolas\\chatgpt\\asistentevirtual\\core\\service\\chatservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F75D7B87-4915-4A70-A941-9B6914979ABF}|..\\Api\\Api.csproj|c:\\nicolas\\chatgpt\\api\\controllers\\consultascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3E82FE54-7E41-4BFC-8F5C-0A08AA45EB0F}|..\\AsistenteVirtual\\AsistenteVirtual.csproj|c:\\nicolas\\chatgpt\\asistentevirtual\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
@@ -32,7 +32,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 12,
+          "SelectedChildIndex": 11,
           "Children": [
             {
               "$type": "Bookmark",
@@ -84,7 +84,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "ChatService.cs",
               "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\AsistenteVirtual\\Core\\Service\\ChatService.cs",
               "RelativeDocumentMoniker": "..\\AsistenteVirtual\\Core\\Service\\ChatService.cs",
@@ -92,8 +92,7 @@
               "RelativeToolTip": "..\\AsistenteVirtual\\Core\\Service\\ChatService.cs",
               "ViewState": "AQIAAA0AAAAAAAAAAAAwwBgAAAAQAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T18:36:04.428Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-28T18:36:04.428Z"
             },
             {
               "$type": "Document",
@@ -117,31 +116,30 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AQIAAA8AAAAAAAAAAAAAABsAAAAgAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-27T13:42:46.626Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-27T13:42:46.626Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "ConsultasController.cs",
               "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\Api\\Controllers\\ConsultasController.cs",
               "RelativeDocumentMoniker": "..\\Api\\Controllers\\ConsultasController.cs",
               "ToolTip": "C:\\NICOLAS\\ChatGPT\\Api\\Controllers\\ConsultasController.cs",
               "RelativeToolTip": "..\\Api\\Controllers\\ConsultasController.cs",
-              "ViewState": "AQIAAEoAAAAAAAAAAAAmwIYAAABBAAAA",
+              "ViewState": "AQIAACwAAAAAAAAAAAAmwDIAAABLAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-27T13:27:09.168Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "ArchivosService.cs",
               "DocumentMoniker": "C:\\NICOLAS\\ChatGPT\\Api\\Services\\ArchivosService.cs",
               "RelativeDocumentMoniker": "..\\Api\\Services\\ArchivosService.cs",
               "ToolTip": "C:\\NICOLAS\\ChatGPT\\Api\\Services\\ArchivosService.cs",
               "RelativeToolTip": "..\\Api\\Services\\ArchivosService.cs",
-              "ViewState": "AQIAAGoAAAAAAAAAAAAhwC0AAAAnAAAA",
+              "ViewState": "AQIAANsAAAAAAAAAAAAtwN8AAAApAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-28T19:47:59.229Z",
               "EditorCaption": ""

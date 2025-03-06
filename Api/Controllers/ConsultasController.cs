@@ -85,7 +85,7 @@ namespace Api.Controllers
         {
             try
             {
-                // Verifica si el índice ya existe o si necesita ser reindexado
+                // verifico si el índice ya existe o si necesita ser reindexado ->
                 VerificarOReindexarArchivos();
 
                 if (string.IsNullOrEmpty(queryString.SentenciaNatural))
@@ -93,8 +93,8 @@ namespace Api.Controllers
                     return BadRequest(new { error = "La pregunta no puede estar vacía." });
                 }
 
-                // Buscar en los archivos indexados y obtener respuesta
-                string response = await _archivosService.SearchAndAnswerAsync(queryString.SentenciaNatural, _indexFilePath);
+                // busco en los archivos indexados y obtengo una respuesta ->
+                string response = await _archivosService.BuscarFragmentosMasRelevantes(queryString.SentenciaNatural, _indexFilePath);
 
                 return Ok(new { answer = response });
             }
@@ -110,8 +110,8 @@ namespace Api.Controllers
         {
             if (!System.IO.File.Exists(_indexFilePath))
             {
-                Console.WriteLine("No se encontró el índice. Indexando archivos...");
-                _archivosService.IndexFiles(_folderPath, _indexFilePath);
+               // Console.WriteLine("No se encontró el índice. Indexando archivos...");
+                _archivosService.IndexarArchivos(_folderPath, _indexFilePath);
                 return;
             }
 

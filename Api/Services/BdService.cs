@@ -115,7 +115,7 @@ namespace Api.Services
 
 
             // envio el esquema completo con la consulta al LLM (al chat gpt propiamente) ->
-            string response = await GetChatCompletionAsync(prompt, humanQuery);
+            string response = await Consultar_OpenAI(prompt, humanQuery);
             return response;
         }
         /// <summary>
@@ -124,7 +124,7 @@ namespace Api.Services
         /// <param name="systemMessage">prompt que le paso al LLM</param>
         /// <param name="userMessage">humanQuery. Si viene null, es porque es el segundo llamado a este metodo (el lamado proximo al cliente).</param>
         /// <returns></returns>
-        private async Task<string> GetChatCompletionAsync(string systemMessage, string? userMessage)
+        private async Task<string> Consultar_OpenAI(string systemMessage, string? userMessage)
         {
             string url = "https://api.openai.com/v1/chat/completions";
 
@@ -288,7 +288,7 @@ namespace Api.Services
 
 
             // envio el esquema completo con la consulta al LLM (al chat gpt propiamente) ->
-            string response = await GetChatCompletionAsync(prompt, null);
+            string response = await Consultar_OpenAI(prompt, null);
             return response;
         }
 

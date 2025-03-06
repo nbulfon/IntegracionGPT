@@ -27,7 +27,7 @@ namespace Api.Services
         /// <summary>
         /// Indexa archivos PDF, Word y Excel, dividiéndolos en fragmentos manejables.
         /// </summary>
-        public void IndexFiles(string folderPath, string indexFilePath)
+        public void IndexarArchivos(string folderPath, string indexFilePath)
         {
             List<FragmentoArchivo> fileIndex = new List<FragmentoArchivo>();
 
@@ -48,7 +48,7 @@ namespace Api.Services
             try
             {
                 // Extrae el texto del archivo (PDF, Word o Excel)
-                string content = ExtractTextFromFile(file);
+                string content = ExtraerTextoDeUnFile(file);
 
                 // saco el 60% del total del archivo
                 int caracteresAGuardar = (int)(content.Length * _porcentajeCaracteresAGuardarFile);
@@ -114,19 +114,19 @@ namespace Api.Services
         /// <summary>
         /// Determina el tipo de archivo y extrae su contenido de manera apropiada.
         /// </summary>
-        private string ExtractTextFromFile(string filePath)
+        private string ExtraerTextoDeUnFile(string filePath)
         {
             string extension = System.IO.Path.GetExtension(filePath).ToLower();
-            if (extension == ".pdf") return ExtractTextFromPdf(filePath);
-            if (extension == ".docx") return ExtractTextFromWord(filePath);
-            if (extension == ".xlsx") return ExtractTextFromExcel(filePath);
+            if (extension == ".pdf") return ExtraerTextoDe_Pdf(filePath);
+            if (extension == ".docx") return ExtraerTextoDe_World(filePath);
+            if (extension == ".xlsx") return ExtraerTextoDe_Excel(filePath);
             return "";
         }
 
         /// <summary>
         /// Extrae el texto de un archivo PDF usando iTextSharp.
         /// </summary>
-        private string ExtractTextFromPdf(string filePath)
+        private string ExtraerTextoDe_Pdf(string filePath)
         {
             StringBuilder text = new StringBuilder();
             using PdfReader reader = new PdfReader(filePath);
@@ -140,7 +140,7 @@ namespace Api.Services
         /// <summary>
         /// Extrae el texto de un archivo Word (.docx) usando OpenXML.
         /// </summary>
-        private string ExtractTextFromWord(string filePath)
+        private string ExtraerTextoDe_World(string filePath)
         {
             StringBuilder text = new StringBuilder();
             using WordprocessingDocument doc = WordprocessingDocument.Open(filePath, false);
@@ -154,7 +154,7 @@ namespace Api.Services
         /// <summary>
         /// Extrae el texto de un archivo Excel (.xlsx) usando ClosedXML.
         /// </summary>
-        private string ExtractTextFromExcel(string filePath)
+        private string ExtraerTextoDe_Excel(string filePath)
         {
             StringBuilder text = new StringBuilder();
             using var workbook = new XLWorkbook(filePath);
@@ -187,14 +187,14 @@ namespace Api.Services
         /// <summary>
         /// Busca en el índice de archivos y encuentra los fragmentos más relevantes para la pregunta del usuario.
         /// </summary>
-        public async Task<string> SearchAndAnswerAsync(string userQuestion, string indexFilePath)
+        public async Task<string> BuscarFragmentosMasRelevantes(string userQuestion, string indexFilePath)
         {
             if (!File.Exists(indexFilePath))
             {
                 return "No hay archivos indexados.";
             }
 
-            // Carga el índice desde el archivo JSON
+            // carga el índice desde el archivo JSON
             List<FragmentoArchivo> listFragmentoArchivo = JsonSerializer.Deserialize<List<FragmentoArchivo>>(File.ReadAllText(indexFilePath));
             if (listFragmentoArchivo == null || listFragmentoArchivo.Count == 0)
             {
@@ -206,11 +206,11 @@ namespace Api.Services
                                        .Select(k => k.ToLower())
                                        .ToList();
 
-            // filtra los fragmentos más relevantes que contienen palabras clave de la pregunta
+            // filtra los fragmentos más relevantes que contienen palabras clave de la pregunta ->
             int fragmentCount = userQuestion.Length > 50 ? 7 : 5;
             List<string> fragmentosRelevantes = listFragmentoArchivo
                 .Where(f => palabrasClave.Any(k => f.Contenido.ToLower().Contains(k)))
-                .Take(fragmentCount) // Usa el valor dinámico
+                .Take(fragmentCount) // usa el valor dinámico
                 .Select(f => f.Contenido)
                 .ToList();
 
@@ -219,15 +219,15 @@ namespace Api.Services
                 return "No se encontraron fragmentos relevantes para la pregunta.";
             }
 
-            // Genera el prompt con la pregunta del usuario y los fragmentos de archivos encontrados
-            string prompt = GeneratePrompt(userQuestion, fragmentosRelevantes);
-            return await GetChatCompletionAsync(prompt);
+            // genera el prompt con la pregunta del usuario y los fragmentos de archivos encontrados ->
+            string prompt = GenerarPrompt(userQuestion, fragmentosRelevantes);
+            return await Consultar_OpenAI(prompt);
         }
 
         /// <summary>
         /// Genera el prompt para OpenAI con la pregunta y los fragmentos relevantes de los documentos.
         /// </summary>
-        private string GeneratePrompt(string userQuestion, List<string> fragmentos)
+        private string GenerarPrompt(string userQuestion, List<string> fragmentos)
         {
             return $@"
             A partir de los siguientes fragmentos de documentos (PDFs, Word, Excel), responde a la pregunta del usuario.
@@ -244,7 +244,7 @@ namespace Api.Services
         /// <summary>
         /// Conecta con OpenAI y obtiene la respuesta basada en los fragmentos de archivos seleccionados.
         /// </summary>
-        private async Task<string> GetChatCompletionAsync(string systemMessage)
+        private async Task<string> Consultar_OpenAI(string systemMessage)
         {
             string url = "https://api.openai.com/v1/chat/completions";
 
